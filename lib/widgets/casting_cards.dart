@@ -5,21 +5,18 @@ import 'package:provider/provider.dart';
 import '../models/models.dart';
 
 class CastingCards extends StatelessWidget {
-
   final int movieId;
 
-  const CastingCards(this.movieId); 
+  const CastingCards(this.movieId);
 
   @override
   Widget build(BuildContext context) {
-
     final moviesProvider = Provider.of<MoviesProvider>(context, listen: false);
 
     return FutureBuilder(
       future: moviesProvider.getMovieCast(movieId),
-      builder: ( _, AsyncSnapshot<List<Cast>> snapshot) {
-        
-        if (!snapshot.hasData){
+      builder: (_, AsyncSnapshot<List<Cast>> snapshot) {
+        if (!snapshot.hasData) {
           return Container(
             constraints: BoxConstraints(maxWidth: 150),
             height: 180,
@@ -30,28 +27,24 @@ class CastingCards extends StatelessWidget {
         final List<Cast> cast = snapshot.data!;
 
         return Container(
-          margin: EdgeInsets.only( bottom: 30),
+          margin: EdgeInsets.only(bottom: 30),
           width: double.infinity,
-          height: 200,
+          height: 190,
           child: ListView.builder(
             itemCount: 10,
             scrollDirection: Axis.horizontal,
-            itemBuilder: ( _, int index) => _CastCard( cast [index]), 
+            itemBuilder: (_, int index) => _CastCard(cast[index]),
           ),
         );
       },
     );
-
-
   }
 }
 
 class _CastCard extends StatelessWidget {
-
   final Cast actor;
 
   const _CastCard(this.actor);
-  
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +54,6 @@ class _CastCard extends StatelessWidget {
       height: 100,
       child: Column(
         children: [
-
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: FadeInImage(
@@ -72,7 +64,6 @@ class _CastCard extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-
           Text(
             actor.name,
             maxLines: 2,
@@ -81,7 +72,6 @@ class _CastCard extends StatelessWidget {
           )
         ],
       ),
-      
-    );   
+    );
   }
 }
