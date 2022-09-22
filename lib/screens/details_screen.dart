@@ -2,38 +2,30 @@ import 'package:flutter/material.dart';
 import '../models/models.dart';
 import 'package:peliculas/widgets/widgets.dart';
 
-
 class DetailsScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
     final Movie movie = ModalRoute.of(context)!.settings.arguments as Movie;
     print(movie.title);
 
     return Scaffold(
         body: CustomScrollView(
-        slivers: [
-          _CustomAppBar(movie),
-          SliverList(
+      slivers: [
+        _CustomAppBar(movie),
+        SliverList(
             delegate: SliverChildListDelegate([
-              _PostedAndTitle(movie),
-              _Overview(movie),
-              _Overview(movie),
-              _Overview(movie),
-              _Overview(movie),
-              CastingCards(movie.id),
-              
-            ])
-          ),
-        ],
-      )
-    );
+          _PostedAndTitle(movie),
+          _Overview(movie),
+          _Overview(movie),
+          _Overview(movie),
+          CastingCards(movie.id),
+        ])),
+      ],
+    ));
   }
 }
 
 class _CustomAppBar extends StatelessWidget {
-
   final Movie movie;
 
   const _CustomAppBar(this.movie);
@@ -71,62 +63,65 @@ class _CustomAppBar extends StatelessWidget {
 }
 
 class _PostedAndTitle extends StatelessWidget {
-
+  
   final Movie movie;
 
   const _PostedAndTitle(this.movie);
 
   @override
   Widget build(BuildContext context) {
-
     final TextTheme textTheme = Theme.of(context).textTheme;
     final size = MediaQuery.of(context).size;
 
     return Container(
-      margin: EdgeInsets.only(top: 20),
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: FadeInImage(
-              placeholder: AssetImage('assets/no-image.jpg'),
-              image: NetworkImage(movie.fullPosterImg),
-              height: 250,
-              width: 180,
-               
+        margin: EdgeInsets.only(top: 20),
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Row(
+          children: [
+            Hero(
+              tag: movie.heroId!,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: FadeInImage(
+                  placeholder: AssetImage('assets/no-image.jpg'),
+                  image: NetworkImage(movie.fullPosterImg),
+                  height: 250,
+                ),
+              ),
             ),
-          ),
-
-        SizedBox(width: 20),
-
-        ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: size.width - 240 ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(movie.title, style: textTheme.headline5, overflow: TextOverflow.ellipsis, maxLines: 2),
-              Text(movie.originalTitle, style: Theme.of(context).textTheme.subtitle1, overflow: TextOverflow.ellipsis, maxLines: 2),
-        
-              Row(
+            SizedBox(width: 20),
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: size.width - 240),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon( Icons.star_outline, size: 20, color: Colors.grey),
-                  SizedBox(width: 5),
-                  Text('${movie.voteAverage}', style: textTheme.caption,)
+                  Text(movie.title,
+                      style: textTheme.headline5,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2),
+                  Text(movie.originalTitle,
+                      style: Theme.of(context).textTheme.subtitle1,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2),
+                  Row(
+                    children: [
+                      Icon(Icons.star_outline, size: 20, color: Colors.grey),
+                      SizedBox(width: 5),
+                      Text(
+                        '${movie.voteAverage}',
+                        style: textTheme.caption,
+                      )
+                    ],
+                  )
                 ],
-              )
-            ],
-          ),
-        )
-
-        ],
-      )
-    );
+              ),
+            )
+          ],
+        ));
   }
 }
 
 class _Overview extends StatelessWidget {
-
   final Movie movie;
 
   const _Overview(this.movie);
@@ -134,7 +129,7 @@ class _Overview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric( horizontal: 25, vertical: 15),
+      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
       child: Text(
         movie.overview,
         textAlign: TextAlign.justify,
